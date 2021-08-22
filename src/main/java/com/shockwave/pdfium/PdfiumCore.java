@@ -321,6 +321,17 @@ public class PdfiumCore {
         }
     }
 
+    /** close specific page */
+    public void closePage(PdfDocument doc, int pageIndex) {
+        synchronized (lock) {
+            if (doc.mNativePagesPtr.containsKey(pageIndex)) {
+                long pagePtr = doc.mNativePagesPtr.get(pageIndex);
+                nativeClosePage(pagePtr);
+                doc.mNativePagesPtr.remove(pageIndex);
+            }
+        }
+    }
+
     /** Release native resources and opened file */
     public void closeDocument(PdfDocument doc) {
         synchronized (lock) {
